@@ -662,17 +662,8 @@ export function initializeTinyAssistant(host) {
       window.innerWidth - panelWidth - VIEWPORT_MARGIN,
     );
     const globbyLeft = globbyCenter.x - CHAT_LAYOUT.globby.centerOffsetX;
-    const globbyRight = globbyLeft + CHAT_LAYOUT.globby.width;
-    const panelLeftIfRight = globbyRight + CHAT_LAYOUT.expanded.gapFromGlobby;
     const panelRightIfLeft = globbyLeft - CHAT_LAYOUT.expanded.gapFromGlobby;
-    const canPlaceRight =
-      panelLeftIfRight + panelWidth <= window.innerWidth - VIEWPORT_MARGIN;
-    const canPlaceLeft = panelRightIfLeft - panelWidth >= VIEWPORT_MARGIN;
-    const preferRight = globbyCenter.x < window.innerWidth / 2;
-    const placeRight = canPlaceRight && (preferRight || !canPlaceLeft);
-    const panelLeft = placeRight
-      ? panelLeftIfRight
-      : panelRightIfLeft - panelWidth;
+    const panelLeft = panelRightIfLeft - panelWidth;
 
     return clamp(panelLeft, VIEWPORT_MARGIN, maxPanelLeft);
   }
