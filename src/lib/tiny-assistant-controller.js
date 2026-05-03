@@ -1477,6 +1477,7 @@ export function initializeTinyAssistant(host) {
   function markAssistantThinkingStatus() {
     const statusPattern =
       /asking llm|requesting llm|detect intents|similarity search|vector search|getting statistics|search to find|find layers|layer query|query results|thinking|working/i;
+    let foundThinkingStatus = false;
 
     getOpenRoots(assistantElement).forEach((root) => {
       root.querySelectorAll(".globby-thinking-status").forEach((element) => {
@@ -1542,6 +1543,7 @@ export function initializeTinyAssistant(host) {
         });
 
       candidates.slice(0, 3).forEach((element) => {
+        foundThinkingStatus = true;
         element.classList?.add("globby-thinking-status");
         element
           .closest(".assistant-chat-card")
@@ -1551,6 +1553,17 @@ export function initializeTinyAssistant(host) {
           ?.classList?.add("globby-loading-card-content");
       });
     });
+
+    syncAssistantBusyWithThinkingStatus(foundThinkingStatus);
+  }
+
+  function syncAssistantBusyWithThinkingStatus(foundThinkingStatus) {
+    if (!foundThinkingStatus || assistantBusy) {
+      return;
+    }
+
+    assistantSignatureBeforeSubmit = getAssistantResponseSignature();
+    setAssistantBusy(true);
   }
 
   function watchAssistantWork() {
