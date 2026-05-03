@@ -50,24 +50,18 @@ const WAITING_IDLE_FRAMES = [
   { row: DEFAULT_FRAME.idleRow, frame: 0, duration: 2600 },
 ];
 const WORKING_LOOP = [
-  { row: DEFAULT_FRAME.waitingRow, frame: 0, duration: 140 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 1, duration: 110 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 2, duration: 110 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 3, duration: 130 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 4, duration: 130 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 5, duration: 180 },
-  { row: DEFAULT_FRAME.reviewRow, frame: 1, duration: 120 },
-  { row: DEFAULT_FRAME.reviewRow, frame: 2, duration: 120 },
-  { row: DEFAULT_FRAME.reviewRow, frame: 3, duration: 120 },
-  { row: DEFAULT_FRAME.reviewRow, frame: 4, duration: 120 },
-  { row: DEFAULT_FRAME.reviewRow, frame: 5, duration: 120 },
-  { row: DEFAULT_FRAME.reviewRow, frame: 6, duration: 160 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 5, duration: 120 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 4, duration: 110 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 3, duration: 110 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 2, duration: 110 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 1, duration: 110 },
-  { row: DEFAULT_FRAME.waitingRow, frame: 0, duration: 180 },
+  // Keep processing on one sprite row. Mixing rows looked like a visual blink
+  // because each row has a slightly different silhouette and registration.
+  { row: DEFAULT_FRAME.waitingRow, frame: 0, duration: 190 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 1, duration: 130 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 2, duration: 130 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 3, duration: 150 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 4, duration: 150 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 5, duration: 240 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 4, duration: 150 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 3, duration: 150 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 2, duration: 130 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 1, duration: 130 },
 ];
 const IDLE_LOOPS = [
   {
