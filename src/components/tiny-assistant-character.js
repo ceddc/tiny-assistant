@@ -17,7 +17,7 @@ const FOLLOW_CURSOR = {
   // outside the sprite body, so the cursor never lands on top of Globby.
   distance: 92,
   minStep: 0.05,
-  speed: 2.4,
+  speed: 2.04,
 };
 
 const ASSISTANT_SIZE = {

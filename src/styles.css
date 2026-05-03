@@ -140,7 +140,7 @@ tiny-assistant-character[hidden] {
   pointer-events: auto;
   position: absolute;
   right: 0;
-  transition: height 170ms ease, width 170ms ease, border-radius 170ms ease;
+  transition: width 170ms ease, border-radius 170ms ease;
   width: min(172px, calc(100vw - 74px));
 }
 
@@ -148,14 +148,9 @@ tiny-assistant-character[hidden] {
   background: rgba(251, 250, 246, 0.98);
   border-radius: 8px;
   display: block;
-  height: min(390px, calc(100vh - 76px));
+  height: min(476px, calc(100vh - 76px));
   padding-bottom: 12px;
   width: min(390px, calc(100vw - 58px));
-}
-
-.assistant-bubble[data-mode="full"][data-chat="active"] .assistant-card,
-.assistant-bubble[data-mode="full"][data-busy="true"] .assistant-card {
-  height: min(476px, calc(100vh - 76px));
 }
 
 .assistant-bubble[data-mode="full"] .assistant-card:hover {

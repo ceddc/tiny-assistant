@@ -58,7 +58,7 @@ export function initializeTinyAssistant(host) {
     expanded: {
       gapFromGlobby: 4,
       offset: { x: -204, y: -82 },
-      panelHeight: 446,
+      panelHeight: 476,
       panelWidth: 390,
     },
     globby: {
@@ -586,14 +586,13 @@ export function initializeTinyAssistant(host) {
       return;
     }
 
-    const cardRect = assistantCard.getBoundingClientRect();
     const isFull = assistantBubble.dataset.mode === "full";
     const modeLayout = isFull ? CHAT_LAYOUT.expanded : CHAT_LAYOUT.collapsed;
     const activeWidth = isFull
-      ? Math.max(cardRect.width, modeLayout.panelWidth)
+      ? Math.min(modeLayout.panelWidth, window.innerWidth - 58)
       : modeLayout.panelWidth;
     const activeHeight = isFull
-      ? Math.max(cardRect.height, modeLayout.panelHeight)
+      ? Math.min(modeLayout.panelHeight, window.innerHeight - 76)
       : modeLayout.panelHeight;
     const activeOffset = modeLayout.offset;
     const desiredX = globbyCenter.x + activeOffset.x;
@@ -879,7 +878,8 @@ export function initializeTinyAssistant(host) {
         }
 
         .header-content {
-          padding: 7px 9px !important;
+          min-block-size: 36px !important;
+          padding: 10px 10px 7px !important;
         }
 
         .header-content,
