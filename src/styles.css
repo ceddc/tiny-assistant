@@ -372,7 +372,6 @@ arcgis-assistant {
 
 @media (max-width: 640px) {
   .assistant-bubble[data-mode="peek"] .assistant-card {
-    opacity: 0;
     pointer-events: none;
   }
 
