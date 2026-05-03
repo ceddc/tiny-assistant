@@ -19,7 +19,12 @@ export default defineConfig({
             "",
           );
 
-          if (withoutPreload.includes('src="./tiny-assistant.js"')) {
+          if (
+            withoutPreload.includes('src="./tiny-assistant.js"') ||
+            withoutPreload.includes(
+              'src="https://ceddc.github.io/tiny-assistant/tiny-assistant.js"',
+            )
+          ) {
             return withoutPreload;
           }
 
@@ -43,6 +48,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         "external-user": resolve(__dirname, "external-user.html"),
+        test: resolve(__dirname, "test.html"),
         "tiny-assistant": resolve(__dirname, "tiny-assistant.js"),
       },
       output: {

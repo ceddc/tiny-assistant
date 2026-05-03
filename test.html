@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiny Assistant CDN Test</title>
+    <script type="module" src="https://js.arcgis.com/5.0/"></script>
+    <script
+      type="module"
+      src="https://ceddc.github.io/tiny-assistant/tiny-assistant.js"></script>
+    <style>
+      html,
+      body,
+      arcgis-map {
+        block-size: 100%;
+        inline-size: 100%;
+        margin: 0;
+      }
+
+      body {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <arcgis-map id="map" item-id="c13bffcad4a244a99062e915e9bc1dc3">
+      <arcgis-zoom slot="top-left"></arcgis-zoom>
+    </arcgis-map>
+
+    <tiny-arcgis-assistant
+      reference-element="#map"
+      sprite-src="https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp"
+      heading="Tiny Assistant"
+      description="Ask questions about this ArcGIS web map">
+      <arcgis-assistant-navigation-agent></arcgis-assistant-navigation-agent>
+      <arcgis-assistant-data-exploration-agent></arcgis-assistant-data-exploration-agent>
+      <arcgis-assistant-help-agent></arcgis-assistant-help-agent>
+    </tiny-arcgis-assistant>
+  </body>
+</html>

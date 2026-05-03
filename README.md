@@ -42,11 +42,28 @@ https://ceddc.github.io/tiny-assistant/
 
 ## Use Tiny Assistant
 
-After publishing `dist`, another ArcGIS Maps SDK page can load the reusable module:
+You can use Tiny Assistant from the GitHub Pages CDN after this repo publishes
+`dist`. The hosted files are:
+
+- module: `https://ceddc.github.io/tiny-assistant/tiny-assistant.js`
+- sprite: `https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp`
+
+The simplest external page loads Esri's ArcGIS CDN plus the hosted Tiny
+Assistant module:
 
 ```html
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <script type="module" src="https://js.arcgis.com/5.0/"></script>
 <script type="module" src="https://ceddc.github.io/tiny-assistant/tiny-assistant.js"></script>
+<style>
+html, body, arcgis-map { block-size: 100%; inline-size: 100%; margin: 0; }
+body { overflow: hidden; }
+</style>
+</head>
+<body>
 
 <arcgis-map id="map" item-id="YOUR_WEB_MAP_ITEM_ID"></arcgis-map>
 
@@ -60,9 +77,19 @@ After publishing `dist`, another ArcGIS Maps SDK page can load the reusable modu
   <arcgis-assistant-data-exploration-agent></arcgis-assistant-data-exploration-agent>
   <arcgis-assistant-help-agent></arcgis-assistant-help-agent>
 </tiny-arcgis-assistant>
+</body>
+</html>
 ```
 
-GitHub Pages hosts your built `tiny-assistant.js` and sprite assets; `https://js.arcgis.com/5.0/` remains Esri's ArcGIS CDN. The public custom element is `tiny-arcgis-assistant`. It accepts `reference-element`, `sprite-src`, `heading`, `description`, optional `start-hidden`, and optional `suggested-prompts`.
+This repo also includes `test.html`, a tiny smoke-test page that imports the
+hosted GitHub Pages module directly. `external-user.html` is similar, but uses
+the local built module from `dist`.
+
+GitHub Pages hosts your built `tiny-assistant.js` and sprite assets;
+`https://js.arcgis.com/5.0/` remains Esri's ArcGIS CDN. The public custom element
+is `tiny-arcgis-assistant`. It accepts `reference-element`, `sprite-src`,
+`heading`, `description`, optional `start-hidden`, and optional
+`suggested-prompts`.
 
 ## ArcGIS Account Requirement
 
