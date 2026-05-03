@@ -80,7 +80,7 @@ export function initializeTinyAssistant(host) {
 
   if (demoIntroPanel) {
     if (window.localStorage.getItem(INTRO_PANEL_STORAGE_KEY) === "true") {
-      demoIntroPanel.hidden = true;
+      demoIntroPanel.closed = true;
     }
 
     const updateIntroToggle = () => {
@@ -88,8 +88,7 @@ export function initializeTinyAssistant(host) {
         return;
       }
 
-      demoIntroToggle.hidden =
-        !demoIntroPanel.hidden && !demoIntroPanel.hasAttribute("closed");
+      demoIntroToggle.hidden = !demoIntroPanel.closed;
     };
 
     const rememberIntroDismissal = () => {
@@ -98,7 +97,6 @@ export function initializeTinyAssistant(host) {
       } catch {
         // If storage is unavailable, Calcite still closes the panel for this page view.
       }
-      demoIntroPanel.hidden = true;
       updateIntroToggle();
     };
 
@@ -112,21 +110,14 @@ export function initializeTinyAssistant(host) {
       } catch {
         // The panel can still reopen for this page view without storage.
       }
-      demoIntroPanel.hidden = false;
-      demoIntroPanel.removeAttribute("closed");
       demoIntroPanel.closed = false;
       updateIntroToggle();
     });
-    new MutationObserver(() => {
-      if (demoIntroPanel.hasAttribute("closed")) {
-        rememberIntroDismissal();
-        return;
-      }
-
-      updateIntroToggle();
-    }).observe(demoIntroPanel, {
+    // Keep the Info button in sync without writing back to the Calcite panel from
+    // this observer. Calcite owns `closed`; we only persist and reflect that state.
+    new MutationObserver(updateIntroToggle).observe(demoIntroPanel, {
       attributes: true,
-      attributeFilter: ["closed", "hidden"],
+      attributeFilter: ["closed"],
     });
     updateIntroToggle();
   }
