@@ -889,6 +889,7 @@ export function initializeTinyAssistant(host) {
         }
 
         .header-content > *:first-child,
+        .heading-text-content,
         .header-content h1,
         .header-content h2,
         .header-content h3,
@@ -897,6 +898,7 @@ export function initializeTinyAssistant(host) {
           font-size: 12px !important;
           font-weight: 800 !important;
           line-height: 1.16 !important;
+          padding-block-start: 5px !important;
         }
 
         .assistant-shell__suggested-prompts {
