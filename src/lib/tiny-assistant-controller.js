@@ -34,6 +34,7 @@ export function initializeTinyAssistant(host) {
   let assistantPatchLoopTimer = null;
   let assistantSignatureBeforeSubmit = "";
   let watchedAssistantRoots = new WeakSet();
+  let expandedPanelSide = "left";
   const globbyStartupMode = pageParams.get("globby")?.toLowerCase();
   const startWithGlobbyHidden = [
     "0",
@@ -667,7 +668,21 @@ export function initializeTinyAssistant(host) {
     const panelRightIfLeft = globbyLeft - CHAT_LAYOUT.expanded.gapFromGlobby;
     const panelLeftIfLeft = panelRightIfLeft - panelWidth;
     const leftSideFits = panelLeftIfLeft >= VIEWPORT_MARGIN;
-    const panelLeft = leftSideFits ? panelLeftIfLeft : panelLeftIfRight;
+    const rightSideFits =
+      panelLeftIfRight + panelWidth <= window.innerWidth - VIEWPORT_MARGIN;
+
+    if (expandedPanelSide === "left" && !leftSideFits && rightSideFits) {
+      expandedPanelSide = "right";
+    } else if (
+      expandedPanelSide === "right" &&
+      !rightSideFits &&
+      leftSideFits
+    ) {
+      expandedPanelSide = "left";
+    }
+
+    const panelLeft =
+      expandedPanelSide === "right" ? panelLeftIfRight : panelLeftIfLeft;
 
     return clamp(panelLeft, VIEWPORT_MARGIN, maxPanelLeft);
   }
