@@ -59,8 +59,8 @@ https://ceddc.github.io/tiny-assistant/
 
 ## Use Tiny Assistant
 
-You can use Tiny Assistant from the GitHub Pages CDN after this repo publishes
-`dist`. The hosted files are:
+You can use Tiny Assistant directly from the GitHub Pages CDN. The hosted files
+are:
 
 - module: `https://ceddc.github.io/tiny-assistant/tiny-assistant.js`
 - sprite: `https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp`
@@ -121,3 +121,67 @@ You can load and inspect Tiny Assistant without signing in. To use AI assistant 
 If chat does not work after sign-in, check the [ArcGIS AI components FAQ](https://developers.arcgis.com/javascript/latest/agentic-apps/ai-faq/) or ask your ArcGIS Online administrator.
 
 Do not commit real ArcGIS usernames, passwords, OAuth secrets, or tokens.
+
+## Project Scope
+
+Tiny Assistant is a prototype, not a replacement for the ArcGIS Maps SDK AI
+components. The scope is intentionally narrow:
+
+- keep Esri's `arcgis-map` and `arcgis-assistant` components as the real map and
+  AI assistant implementation;
+- test whether the assistant can feel more approachable when it is represented
+  by a small movable character;
+- package the wrapper as one reusable custom element that can be loaded from a
+  GitHub Pages CDN;
+- make the demo easy to inspect, copy, and adapt.
+
+The project does not implement its own LLM, map reasoning, authentication
+system, or ArcGIS data access. Those stay with the ArcGIS Maps SDK and the
+ArcGIS AI Assistant components.
+
+## Design Choices
+
+The main design choice was to wrap, not rewrite. Tiny Assistant passes ArcGIS
+assistant agents through to an internal `arcgis-assistant`, then adds the Globby
+character, sign-in gating, panel positioning, compact styling, and animation
+states around it.
+
+The chat is gated on sign-in because the ArcGIS AI Assistant only works for
+eligible ArcGIS Online organization accounts. Signed-out users can see the map
+and the character, but opening the chat starts ArcGIS sign-in instead of showing
+an apparently ready assistant.
+
+The character is visible by default so the page immediately communicates the
+experiment. The panel stays compact and follows the character, but it clamps to
+the viewport so map controls and chat content remain usable.
+
+The CDN module is a plain browser custom element. There is no framework runtime
+and no new production dependency; the demo relies on the ArcGIS Maps SDK CDN and
+the built `tiny-assistant.js` file published by GitHub Pages.
+
+## Files To Notice
+
+- `src/components/tiny-arcgis-assistant.js` defines the public
+  `<tiny-arcgis-assistant>` element.
+- `src/components/tiny-assistant-character.js` renders and animates Globby from
+  the spritesheet.
+- `src/lib/tiny-assistant-controller.js` wires sign-in, chat open/close,
+  positioning, ArcGIS assistant styling patches, and animation states.
+- `index.html` is the main demo page.
+- `test.html` is the smallest CDN smoke test using the hosted GitHub Pages
+  module.
+- `external-user.html` is a built-output style example that uses the local
+  module from `dist`.
+
+## Known Prototype Limits
+
+This is meant to answer "can this be built?" rather than "is this a polished
+product?" The implementation patches some ArcGIS assistant shadow DOM styling to
+fit a much smaller panel, which is useful for a prototype but should be reviewed
+carefully before production use. The custom element is structured to avoid
+obvious single-instance assumptions, but the demo page itself is designed around
+one map and one assistant.
+
+Expect the ArcGIS AI Assistant behavior, account access, and component internals
+to change as Esri evolves the SDK. If that happens, the wrapper may need small
+updates.
