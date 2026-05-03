@@ -1,6 +1,14 @@
 # Tiny Assistant
 
-Tiny Assistant is a weekend AI experiment: can a Codex/ChatGPT-style "pet" become a tiny assistant that replaces the standard ArcGIS AI Assistant panel?
+<p>
+  <img src="./public/assets/globby-base.png" alt="Globby, the Tiny Assistant character" width="112" />
+</p>
+
+Tiny Assistant is a weekend AI experiment about making something like Clippy
+for ArcGIS: a tiny movable assistant character for an ArcGIS web map.
+
+The question was: can a Codex/ChatGPT-style "pet" become a tiny assistant that
+replaces the standard ArcGIS AI Assistant panel?
 
 The project starts from:
 
@@ -17,6 +25,11 @@ Open the live demo:
 
 [https://ceddc.github.io/tiny-assistant/](https://ceddc.github.io/tiny-assistant/)
 
+You can explore the map and UI without signing in, but the assistant chat only
+works with an eligible ArcGIS Online organization account where AI assistants
+are enabled and your role can use them. See
+[ArcGIS Account Requirement](#arcgis-account-requirement) before trying the chat.
+
 Or run it locally:
 
 ```bash
@@ -26,7 +39,7 @@ npm run dev
 
 Open the Vite URL printed in your terminal.
 
-Tiny Assistant starts visible by default. You can explore the map and UI without signing in. The assistant chat only opens for real use after ArcGIS signs in an eligible account.
+Tiny Assistant starts visible by default.
 
 For GitHub Pages, build the project and publish `dist`:
 
