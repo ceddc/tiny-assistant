@@ -45,6 +45,7 @@ export function initializeTinyAssistant(host) {
   const ARCGIS_SHARING_URL = "https://www.arcgis.com/sharing/rest";
   let arcgisIdentityManager = null;
   let arcgisIdentityGuardReady = false;
+  let arcgisSignInAttempt = 0;
 
   // Layout numbers are deliberately centralized so the assistant/panel relationship
   // is easy to tune without spelunking through the interaction handlers.
@@ -313,6 +314,22 @@ export function initializeTinyAssistant(host) {
     dialog.content?.emit?.("cancel", {});
   }
 
+  function hideArcgisDialogAfterSuccess() {
+    const dialog = arcgisIdentityManager?.dialog;
+    if (!dialog) {
+      return;
+    }
+
+    dialog.visible = false;
+    dialog.open = false;
+    document
+      .querySelectorAll(".esri-identity-modal calcite-dialog")
+      .forEach((element) => {
+        element.open = false;
+        element.hidden = true;
+      });
+  }
+
   async function checkArcgisSignInStatus() {
     const identityManager = await getIdentityManager();
     if (!identityManager) {
@@ -341,6 +358,8 @@ export function initializeTinyAssistant(host) {
       return false;
     }
 
+    const signInAttempt = ++arcgisSignInAttempt;
+    let signedIn = false;
     arcgisSignInBusy = true;
     arcgisSignInAllowed = true;
     updateGlobbyStatus();
@@ -348,18 +367,28 @@ export function initializeTinyAssistant(host) {
 
     try {
       const credential = identityManager.getCredential(ARCGIS_SHARING_URL);
-      window.setTimeout(showAllowedArcgisDialog, 0);
-      window.setTimeout(showAllowedArcgisDialog, 250);
+      const showDialogForCurrentAttempt = () => {
+        if (signInAttempt === arcgisSignInAttempt) {
+          showAllowedArcgisDialog();
+        }
+      };
+      window.setTimeout(showDialogForCurrentAttempt, 0);
+      window.setTimeout(showDialogForCurrentAttempt, 250);
       await credential;
-      setArcgisSignedIn(true);
-      return true;
+      signedIn = await checkArcgisSignInStatus();
+      setArcgisSignedIn(signedIn);
+      return signedIn;
     } catch {
       setArcgisSignedIn(false);
       return false;
     } finally {
       arcgisSignInAllowed = false;
       arcgisSignInBusy = false;
-      cancelUnexpectedArcgisDialog();
+      if (signedIn) {
+        hideArcgisDialogAfterSuccess();
+      } else {
+        cancelUnexpectedArcgisDialog();
+      }
       updateGlobbyStatus();
       if (!assistantBusy) {
         globby?.setAvatarState("idle");
@@ -397,6 +426,7 @@ export function initializeTinyAssistant(host) {
       }
     }
 
+    await checkArcgisSignInStatus();
     setPanelOpen(true);
   }
 
