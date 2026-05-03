@@ -7,6 +7,7 @@ export function initializeTinyAssistant(host) {
   const assistantHeader = host.querySelector(".assistant-header");
   let assistantElement = host.querySelector("arcgis-assistant");
   const demoIntroPanel = document.querySelector("#demo-intro-panel");
+  const demoIntroToggle = document.querySelector("#demo-intro-toggle");
   const followCursorToggle = host.querySelector(".follow-cursor-toggle");
   const globbyMenu = host.querySelector(".globby-menu");
   const hideGlobbyButton = host.querySelector(".hide-tiny-assistant-button");
@@ -82,26 +83,52 @@ export function initializeTinyAssistant(host) {
       demoIntroPanel.hidden = true;
     }
 
+    const updateIntroToggle = () => {
+      if (!demoIntroToggle) {
+        return;
+      }
+
+      demoIntroToggle.hidden =
+        !demoIntroPanel.hidden && !demoIntroPanel.hasAttribute("closed");
+    };
+
     const rememberIntroDismissal = () => {
       try {
         window.localStorage.setItem(INTRO_PANEL_STORAGE_KEY, "true");
       } catch {
         // If storage is unavailable, Calcite still closes the panel for this page view.
       }
+      demoIntroPanel.hidden = true;
+      updateIntroToggle();
     };
 
     demoIntroPanel.addEventListener(
       "calcitePanelClose",
       rememberIntroDismissal,
     );
+    demoIntroToggle?.addEventListener("click", () => {
+      try {
+        window.localStorage.removeItem(INTRO_PANEL_STORAGE_KEY);
+      } catch {
+        // The panel can still reopen for this page view without storage.
+      }
+      demoIntroPanel.hidden = false;
+      demoIntroPanel.removeAttribute("closed");
+      demoIntroPanel.closed = false;
+      updateIntroToggle();
+    });
     new MutationObserver(() => {
       if (demoIntroPanel.hasAttribute("closed")) {
         rememberIntroDismissal();
+        return;
       }
+
+      updateIntroToggle();
     }).observe(demoIntroPanel, {
       attributes: true,
-      attributeFilter: ["closed"],
+      attributeFilter: ["closed", "hidden"],
     });
+    updateIntroToggle();
   }
 
   patchArcgisMapSize();

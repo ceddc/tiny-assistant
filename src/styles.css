@@ -49,6 +49,31 @@ arcgis-map {
   display: none;
 }
 
+.demo-intro-toggle {
+  appearance: none;
+  background: rgba(251, 250, 246, 0.98);
+  border: 1px solid rgba(31, 143, 133, 0.28);
+  border-radius: 999px;
+  box-shadow: 0 10px 22px rgba(23, 33, 31, 0.16);
+  color: #136b64;
+  cursor: pointer;
+  font: 800 11px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-block-size: 30px;
+  padding: 0 12px;
+  position: fixed;
+  right: 16px;
+  top: 16px;
+  z-index: 8;
+}
+
+.demo-intro-toggle[hidden] {
+  display: none;
+}
+
+.demo-intro-toggle:hover {
+  background: #eef8f5;
+}
+
 .demo-intro-content {
   display: grid;
   gap: 7px;
@@ -312,6 +337,11 @@ arcgis-assistant {
 @media (max-width: 920px) {
   .demo-intro-panel {
     inline-size: min(320px, calc(100vw - 76px));
+    right: 12px;
+    top: 12px;
+  }
+
+  .demo-intro-toggle {
     right: 12px;
     top: 12px;
   }
