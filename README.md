@@ -11,23 +11,25 @@ like this could be built._
 Tiny Assistant is a weekend AI experiment about making something like Clippy
 for ArcGIS: a tiny movable assistant character for an ArcGIS web map.
 
-The question was: can a Codex/ChatGPT-style "pet" become a tiny assistant that
-replaces the standard ArcGIS AI Assistant panel?
+Prototype question: can a Codex/ChatGPT-style "pet" become a tiny assistant
+that replaces the standard ArcGIS AI Assistant panel?
 
-The project starts from:
+## Sources
 
 - Esri [ArcGIS Maps SDK for JavaScript 5.0](https://developers.arcgis.com/javascript/latest/guide/)
 - Esri [AI Assistant component sample](https://developers.arcgis.com/javascript/latest/sample-code/ai-assistant/)
 - Esri [`arcgis-assistant` component reference](https://developers.arcgis.com/javascript/latest/references/ai-components/components/arcgis-assistant/)
 - Codex/ChatGPT-style pets via [Codex settings](https://openai.com/academy/codex-settings/), [the Codex app](https://openai.com/index/introducing-the-codex-app/), and [OpenAI Devs on X](https://x.com/OpenAIDevs/status/2050275713824211041)
+- Pet sprites from [Petdex](https://petdex.crafter.run/), including [Boba](https://petdex.crafter.run/pets/boba)
 
-It keeps the map and AI chat as real ArcGIS web components, then wraps them in Tiny Assistant, with a tiny movable assistant character named Globby.
+Tiny Assistant keeps the map and AI chat as ArcGIS web components, then wraps
+them with a movable assistant character and compact chat panel.
 
-The character layer is designed around Codex-style pet spritesheets, so it can
-also work with compatible sprites from projects like
-[Petdex](https://petdex.crafter.run/) when they follow the same atlas layout.
-For example, this repo includes a local copy of the
-[Boba sprite](https://petdex.crafter.run/pets/boba).
+Bundled sprites:
+
+- `globby`: original Tiny Assistant character in this repo.
+- `clippy`: Petdex-compatible sprite sourced from [Petdex](https://petdex.crafter.run/).
+- `boba`: Petdex sprite sourced from [Boba on Petdex](https://petdex.crafter.run/pets/boba).
 
 ## Try The Demo
 
@@ -159,8 +161,8 @@ the viewport so it stays visible near screen edges.
 The current bundled styles are:
 
 - `globby`: the original Tiny Assistant character in this repo;
-- `clippy`: a local experiment sprite;
-- `boba`: a local copy of the [Boba Petdex sprite](https://petdex.crafter.run/pets/boba).
+- `clippy`: Petdex-compatible sprite sourced from [Petdex](https://petdex.crafter.run/);
+- `boba`: Petdex sprite sourced from [Boba on Petdex](https://petdex.crafter.run/pets/boba).
 
 Sprites need to follow the same Codex-style atlas contract used by Globby:
 8 columns, 9 rows, and the same row meanings for idle, movement, wave, waiting,
