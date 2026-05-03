@@ -69,12 +69,19 @@ export function initializeTinyAssistant(host) {
       panelHeight: 476,
       panelWidth: 390,
     },
+    mobileExpanded: {
+      gapFromGlobby: 4,
+      offset: { x: -178, y: -74 },
+      panelHeight: 390,
+      panelWidth: 330,
+    },
     globby: {
       centerOffsetX: 38.72,
       centerOffsetY: 41.14,
       width: 77.44,
     },
   };
+  const MOBILE_PANEL_BREAKPOINT = 640;
   const VIEWPORT_MARGIN = 12;
 
   if (assistantElement && !assistantElement.suggestedPrompts?.length) {
@@ -622,7 +629,7 @@ export function initializeTinyAssistant(host) {
     }
 
     const isFull = assistantBubble.dataset.mode === "full";
-    const modeLayout = isFull ? CHAT_LAYOUT.expanded : CHAT_LAYOUT.collapsed;
+    const modeLayout = isFull ? getExpandedLayout() : CHAT_LAYOUT.collapsed;
     const activeWidth = isFull
       ? Math.min(modeLayout.panelWidth, window.innerWidth - 58)
       : modeLayout.panelWidth;
@@ -650,7 +657,7 @@ export function initializeTinyAssistant(host) {
       const panelOverlapX = activeWidth - CHAT_LAYOUT.collapsed.panelWidth;
       const panelOverlapY = activeHeight - CHAT_LAYOUT.collapsed.panelHeight;
       const desiredPanelTop = desiredY - panelOverlapY;
-      const panelLeft = placeExpandedPanelLeft(activeWidth);
+      const panelLeft = placeExpandedPanelLeft(activeWidth, modeLayout);
       const panelTop = clamp(
         desiredPanelTop,
         VIEWPORT_MARGIN,
@@ -670,15 +677,21 @@ export function initializeTinyAssistant(host) {
     assistantBubble.style.bottom = "auto";
   }
 
-  function placeExpandedPanelLeft(panelWidth) {
+  function getExpandedLayout() {
+    return window.innerWidth <= MOBILE_PANEL_BREAKPOINT
+      ? CHAT_LAYOUT.mobileExpanded
+      : CHAT_LAYOUT.expanded;
+  }
+
+  function placeExpandedPanelLeft(panelWidth, expandedLayout) {
     const maxPanelLeft = Math.max(
       VIEWPORT_MARGIN,
       window.innerWidth - panelWidth - VIEWPORT_MARGIN,
     );
     const globbyLeft = globbyCenter.x - CHAT_LAYOUT.globby.centerOffsetX;
     const globbyRight = globbyLeft + CHAT_LAYOUT.globby.width;
-    const panelLeftIfRight = globbyRight + CHAT_LAYOUT.expanded.gapFromGlobby;
-    const panelRightIfLeft = globbyLeft - CHAT_LAYOUT.expanded.gapFromGlobby;
+    const panelLeftIfRight = globbyRight + expandedLayout.gapFromGlobby;
+    const panelRightIfLeft = globbyLeft - expandedLayout.gapFromGlobby;
     const panelLeftIfLeft = panelRightIfLeft - panelWidth;
     const leftSideFits = panelLeftIfLeft >= VIEWPORT_MARGIN;
     const rightSideFits =

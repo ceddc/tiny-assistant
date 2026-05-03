@@ -151,6 +151,7 @@ template.innerHTML = `
       left: 0;
       pointer-events: auto;
       position: absolute;
+      touch-action: none;
       top: 0;
       transform: translate3d(var(--assistant-x, 50vw), var(--assistant-y, 50vh), 0);
       transform-origin: center bottom;
