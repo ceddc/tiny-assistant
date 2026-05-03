@@ -94,7 +94,6 @@ body { overflow: hidden; }
 
 <tiny-arcgis-assistant
   reference-element="#map"
-  sprite-src="https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp"
   sprites='{
     "globby": "https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp",
     "clippy": "https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp",
@@ -117,22 +116,24 @@ the local built module from `dist`.
 
 GitHub Pages hosts your built `tiny-assistant.js` and sprite assets;
 `https://js.arcgis.com/5.0/` remains Esri's ArcGIS CDN. The public custom element
-is `tiny-arcgis-assistant`. It accepts `reference-element`, `sprite-src`,
+is `tiny-arcgis-assistant`. It accepts `reference-element`, `sprites`,
 `heading`, `description`, optional `start-hidden`, optional
-`suggested-prompts`, optional `sprite`, and optional `sprites`. When multiple
-sprites are configured, the right-click menu includes a Style section for
-switching between them.
+`suggested-prompts`, and optional `sprite`. When multiple sprites are
+configured, the right-click menu includes a Style section for switching between
+them.
 
 ## Sprite Styles
 
 Tiny Assistant can use one sprite or several named sprite styles.
 
-For one character, keep the simple `sprite-src` attribute:
+For one character, pass one named sprite:
 
 ```html
 <tiny-arcgis-assistant
   reference-element="#map"
-  sprite-src="https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp">
+  sprites='{
+    "globby": "https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp"
+  }'>
 </tiny-arcgis-assistant>
 ```
 
@@ -143,7 +144,6 @@ initial style with `sprite`:
 <tiny-arcgis-assistant
   reference-element="#map"
   sprite="boba"
-  sprite-src="https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp"
   sprites='{
     "globby": "https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp",
     "clippy": "https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp",

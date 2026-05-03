@@ -81,27 +81,44 @@ function toSpriteLabel(name) {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
-function normalizeSpriteEntries(entries, fallbackSrc) {
+function normalizeSpriteEntries(entries) {
   const sprites = Object.entries(entries || {})
     .map(([name, src]) => [String(name).trim(), String(src).trim()])
     .filter(([name, src]) => name && src);
 
-  if (!sprites.some(([name]) => name === "globby") && fallbackSrc) {
-    sprites.unshift(["globby", fallbackSrc]);
-  }
-
   return sprites;
 }
 
-function parseSprites(value, fallbackSrc) {
+function parseSprites(value) {
   if (!value) {
-    return normalizeSpriteEntries({ globby: fallbackSrc }, fallbackSrc);
+    return [];
   }
 
   try {
     const parsed = JSON.parse(value);
-    return normalizeSpriteEntries(parsed, fallbackSrc);
+    if (typeof parsed === "string") {
+      return normalizeSpriteEntries({ default: parsed });
+    }
+
+    if (Array.isArray(parsed)) {
+      return normalizeSpriteEntries(
+        Object.fromEntries(
+          parsed
+            .map((sprite) => [
+              sprite?.name || sprite?.id || sprite?.label,
+              sprite?.src || sprite?.url,
+            ])
+            .filter(([name, src]) => name && src),
+        ),
+      );
+    }
+
+    return normalizeSpriteEntries(parsed);
   } catch {
+    if (!value.includes(":")) {
+      return normalizeSpriteEntries({ default: value });
+    }
+
     const entries = {};
     value
       .split(/[\n,]/)
@@ -118,7 +135,7 @@ function parseSprites(value, fallbackSrc) {
         entries[name] = src;
       });
 
-    return normalizeSpriteEntries(entries, fallbackSrc);
+    return normalizeSpriteEntries(entries);
   }
 }
 
@@ -132,13 +149,12 @@ class TinyArcgisAssistant extends HTMLElement {
 
     const agents = Array.from(this.children);
     const startHidden = booleanAttribute(this, "start-hidden");
-    const spriteSrc = this.getAttribute("sprite-src") || "";
-    const spriteEntries = parseSprites(this.getAttribute("sprites"), spriteSrc);
+    const spriteEntries = parseSprites(this.getAttribute("sprites"));
     const selectedSpriteName =
       this.getAttribute("sprite") || spriteEntries[0]?.[0] || "globby";
     const selectedSprite =
       spriteEntries.find(([name]) => name === selectedSpriteName) ||
-      spriteEntries[0] || ["globby", spriteSrc];
+      spriteEntries[0] || ["globby", ""];
     const referenceElement =
       this.getAttribute("reference-element") || "arcgis-map";
     const heading = this.getAttribute("heading") || "ArcGIS AI Assistant";
