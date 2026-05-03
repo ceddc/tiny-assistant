@@ -227,13 +227,13 @@ export function initializeTinyAssistant(host) {
 
     clearTimeout(assistantBusyTimer);
     if (busy) {
-      globby?.setAvatarState("chat");
+      globby?.setAvatarState("working");
       queueAssistantPatchLoop(12000);
       assistantBusyTimer = setTimeout(() => setAssistantBusy(false), 45000);
       return;
     }
 
-    globby?.setAvatarState("idle");
+    globby?.setAvatarState(arcgisSignInBusy ? "waiting" : "idle");
   }
 
   function playGlobbyHelloOnce() {

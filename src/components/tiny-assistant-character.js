@@ -49,6 +49,26 @@ const WAITING_IDLE_FRAMES = [
   { frame: 1, duration: 150 },
   { row: DEFAULT_FRAME.idleRow, frame: 0, duration: 2600 },
 ];
+const WORKING_LOOP = [
+  { row: DEFAULT_FRAME.waitingRow, frame: 0, duration: 140 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 1, duration: 110 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 2, duration: 110 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 3, duration: 130 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 4, duration: 130 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 5, duration: 180 },
+  { row: DEFAULT_FRAME.reviewRow, frame: 1, duration: 120 },
+  { row: DEFAULT_FRAME.reviewRow, frame: 2, duration: 120 },
+  { row: DEFAULT_FRAME.reviewRow, frame: 3, duration: 120 },
+  { row: DEFAULT_FRAME.reviewRow, frame: 4, duration: 120 },
+  { row: DEFAULT_FRAME.reviewRow, frame: 5, duration: 120 },
+  { row: DEFAULT_FRAME.reviewRow, frame: 6, duration: 160 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 5, duration: 120 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 4, duration: 110 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 3, duration: 110 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 2, duration: 110 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 1, duration: 110 },
+  { row: DEFAULT_FRAME.waitingRow, frame: 0, duration: 180 },
+];
 const IDLE_LOOPS = [
   {
     row: DEFAULT_FRAME.idleRow,
@@ -83,6 +103,22 @@ const IDLE_LOOPS = [
     ],
   },
 ];
+
+function getTimelineFrame(timeline, time = Date.now()) {
+  const period = timeline.reduce((total, frame) => total + frame.duration, 0);
+  let elapsed = time % period;
+  let currentFrame = timeline[0];
+
+  for (const frame of timeline) {
+    currentFrame = frame;
+    if (elapsed < frame.duration) {
+      break;
+    }
+    elapsed -= frame.duration;
+  }
+
+  return currentFrame;
+}
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -170,6 +206,10 @@ template.innerHTML = `
     :host(:not([moving])[state="chat"]) .runner {
       --row: var(--waiting-row, 6);
     }
+
+    :host(:not([moving])[state="working"]) .runner {
+      --row: var(--waiting-row, 6);
+    }
   </style>
 
   <div class="runner sprite" part="runner" aria-hidden="true"></div>
@@ -251,9 +291,16 @@ export class TinyAssistantCharacter extends HTMLElement {
 
   setAvatarState(state) {
     if (
-      ["idle", "waiting", "wave", "jump", "failed", "review", "chat"].includes(
-        state,
-      )
+      [
+        "idle",
+        "waiting",
+        "wave",
+        "jump",
+        "failed",
+        "review",
+        "chat",
+        "working",
+      ].includes(state)
     ) {
       this.setAttribute("state", state);
     }
@@ -522,6 +569,12 @@ export class TinyAssistantCharacter extends HTMLElement {
       this.#setSpriteFrame(
         waveFrames[Math.floor(Date.now() / 120) % waveFrames.length],
       );
+      return;
+    }
+
+    if (state === "working") {
+      const frame = getTimelineFrame(WORKING_LOOP);
+      this.#setSpriteFrame(frame.frame, frame.row);
       return;
     }
 
