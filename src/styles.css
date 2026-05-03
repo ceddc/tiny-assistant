@@ -2,6 +2,7 @@ html,
 body {
   height: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 body {
@@ -10,20 +11,25 @@ body {
 }
 
 .app-shell {
-  min-height: 100%;
+  block-size: 100%;
+  min-block-size: 100dvh;
 }
 
 .map-stage {
-  height: 100vh;
-  min-height: 100vh;
+  block-size: 100%;
+  min-block-size: 100dvh;
   position: relative;
 }
 
 arcgis-map {
+  block-size: 100%;
   display: block;
-  height: 100vh;
-  min-height: 100vh;
-  width: 100%;
+  inline-size: 100%;
+  min-block-size: 100dvh;
+}
+
+tiny-arcgis-assistant {
+  display: contents;
 }
 
 .demo-intro-panel {

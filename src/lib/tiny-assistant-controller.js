@@ -521,7 +521,10 @@ export function initializeTinyAssistant(host) {
     await openChatOrSignIn();
   });
 
-  window.addEventListener("resize", placeGroupFromGlobby);
+  window.addEventListener("resize", () => {
+    patchArcgisMapSize();
+    placeGroupFromGlobby();
+  });
   requestAnimationFrame(placeGroupFromGlobby);
   globby?.setFollowCursor(false);
   requestAnimationFrame(() => setGlobbyVisible(!startWithGlobbyHidden));
@@ -743,7 +746,8 @@ export function initializeTinyAssistant(host) {
     const viewContainer = shadowRoot.querySelector(".arcgis-map");
     if (viewContainer) {
       viewContainer.style.width = "100%";
-      viewContainer.style.height = `${Math.max(mapElement.clientHeight, window.innerHeight)}px`;
+      viewContainer.style.height = "100%";
+      viewContainer.style.minHeight = "100%";
     }
 
     mapElement.view?.resize?.();
