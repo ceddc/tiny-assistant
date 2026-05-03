@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiny Assistant External Page Example</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <script type="module" src="https://js.arcgis.com/5.0/"></script>
+    <script type="module" src="./tiny-assistant.js"></script>
+    <style>
+      html,
+      body,
+      arcgis-map {
+        block-size: 100%;
+        inline-size: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <arcgis-map id="map" item-id="c13bffcad4a244a99062e915e9bc1dc3">
+      <arcgis-zoom slot="top-left"></arcgis-zoom>
+      <arcgis-expand slot="top-left">
+        <arcgis-legend></arcgis-legend>
+      </arcgis-expand>
+    </arcgis-map>
+
+    <tiny-arcgis-assistant
+      reference-element="#map"
+      sprite-src="./assets/globby-spritesheet.webp"
+      heading="Change in wheat production 2017-2022"
+      description="Explore wheat production in the U.S. from 2017 to 2022."
+      suggested-prompts='["Go to the county that produced the most wheat in 2022.", "How does that compare to the average county that produced wheat?", "How many counties produced less wheat in 2022 than in 2017?"]'>
+      <arcgis-assistant-navigation-agent></arcgis-assistant-navigation-agent>
+      <arcgis-assistant-data-exploration-agent></arcgis-assistant-data-exploration-agent>
+      <arcgis-assistant-help-agent></arcgis-assistant-help-agent>
+    </tiny-arcgis-assistant>
+  </body>
+</html>

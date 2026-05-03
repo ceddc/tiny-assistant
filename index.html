@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiny Assistant</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <script type="module" src="https://js.arcgis.com/5.0/"></script>
+    <script type="module" src="./tiny-assistant.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="map-stage" aria-label="Tiny Assistant map demo">
+        <arcgis-map
+          id="demo-map"
+          item-id="c13bffcad4a244a99062e915e9bc1dc3">
+          <arcgis-zoom slot="top-left"></arcgis-zoom>
+          <arcgis-expand slot="top-left">
+            <arcgis-legend></arcgis-legend>
+          </arcgis-expand>
+        </arcgis-map>
+
+        <calcite-panel
+          id="demo-intro-panel"
+          class="demo-intro-panel"
+          heading="Tiny Assistant"
+          closable>
+          <div class="demo-intro-content">
+            <p>
+              This demo uses Esri's AI Assistant sample web map, Change in
+              wheat production 2017-2022.
+            </p>
+            <p>
+              ArcGIS AI Assistant can navigate the map, answer questions about
+              the wheat production layers, and help inspect the data through
+              chat.
+            </p>
+            <p>
+              The chat opens after signing in with an eligible ArcGIS Online
+              organization account where AI assistants are enabled and your
+              role can use them.
+            </p>
+            <p>
+              Weekend AI experiment: can a Codex/ChatGPT-style "pet" become a
+              tiny assistant that replaces the standard ArcGIS AI Assistant
+              panel?
+            </p>
+            <p class="demo-intro-hint">
+              Tip: right-click the assistant character to open a small menu,
+              including an option to follow your cursor.
+            </p>
+            <a
+              href="https://developers.arcgis.com/javascript/latest/sample-code/ai-assistant/"
+              target="_blank"
+              rel="noreferrer">
+              ArcGIS JS AI Assistant sample
+            </a>
+            <a
+              href="https://developers.arcgis.com/javascript/latest/agentic-apps/ai-faq/"
+              target="_blank"
+              rel="noreferrer">
+              ArcGIS AI account requirements
+            </a>
+          </div>
+        </calcite-panel>
+
+        <tiny-arcgis-assistant
+          sprite-src="./assets/globby-spritesheet.webp"
+          reference-element="#demo-map"
+          suggested-prompts='["Go to the county that produced the most wheat in 2022.", "How does that compare to the average county that produced wheat?", "How many counties produced less wheat in 2022 than in 2017?"]'
+          heading="Change in wheat production 2017-2022"
+          description="Explore wheat production in the U.S. from 2017 to 2022.">
+          <arcgis-assistant-navigation-agent></arcgis-assistant-navigation-agent>
+          <arcgis-assistant-data-exploration-agent></arcgis-assistant-data-exploration-agent>
+          <arcgis-assistant-help-agent></arcgis-assistant-help-agent>
+        </tiny-arcgis-assistant>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,339 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #f5f1e8;
+  color: #17211f;
+}
+
+.app-shell {
+  min-height: 100%;
+}
+
+.map-stage {
+  height: 100vh;
+  min-height: 100vh;
+  position: relative;
+}
+
+arcgis-map {
+  display: block;
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.demo-intro-panel {
+  --calcite-color-brand: #1f8f85;
+  --calcite-color-brand-hover: #16766e;
+  --calcite-color-border-3: rgba(31, 143, 133, 0.2);
+  --calcite-color-foreground-1: #fbfaf6;
+  --calcite-color-foreground-2: #f2f8f5;
+  --calcite-color-text-1: #17211f;
+  --calcite-color-text-2: #56615c;
+  border: 1px solid rgba(31, 143, 133, 0.24);
+  block-size: auto;
+  box-shadow: 0 14px 34px rgba(23, 33, 31, 0.16);
+  inline-size: min(330px, calc(100vw - 76px));
+  max-block-size: none;
+  position: fixed;
+  right: 16px;
+  top: 16px;
+  z-index: 8;
+}
+
+.demo-intro-panel[hidden] {
+  display: none;
+}
+
+.demo-intro-content {
+  display: grid;
+  gap: 7px;
+  padding: 10px 13px 13px;
+}
+
+.demo-intro-content p {
+  color: #56615c;
+  font: 12px/1.34 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0;
+}
+
+.demo-intro-content .demo-intro-hint {
+  color: #69746f;
+  font-size: 11px;
+  line-height: 1.32;
+}
+
+.demo-intro-content a {
+  color: #136b64;
+  font: 700 11px/1.2 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.assistant-bubble {
+  display: block;
+  height: 42px;
+  position: fixed;
+  right: auto;
+  top: 120px;
+  width: 172px;
+  z-index: 6;
+}
+
+.assistant-bubble[hidden],
+tiny-assistant-character[hidden] {
+  display: none;
+}
+
+.assistant-toggle {
+  align-items: center;
+  appearance: none;
+  background: rgba(251, 250, 246, 0.96);
+  border: 1px solid rgba(31, 143, 133, 0.26);
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(23, 33, 31, 0.16);
+  cursor: pointer;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  position: absolute;
+  right: -12px;
+  top: 7px;
+  width: 28px;
+  z-index: 2;
+}
+
+.assistant-toggle:hover {
+  background: #eef8f5;
+}
+
+.assistant-toggle span {
+  border-bottom: 2px solid #1f8f85;
+  border-right: 2px solid #1f8f85;
+  display: block;
+  flex: 0 0 auto;
+  height: 7px;
+  transform: translateY(2px) rotate(225deg);
+  width: 7px;
+}
+
+.assistant-bubble[data-mode="full"] .assistant-toggle span {
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.assistant-card {
+  background: rgba(251, 250, 246, 0.96);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(31, 143, 133, 0.22);
+  border-radius: 18px;
+  bottom: 0;
+  box-sizing: border-box;
+  box-shadow: 0 12px 28px rgba(23, 33, 31, 0.18);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 42px;
+  overflow: hidden;
+  pointer-events: auto;
+  position: absolute;
+  right: 0;
+  transition: height 170ms ease, width 170ms ease, border-radius 170ms ease;
+  width: min(172px, calc(100vw - 74px));
+}
+
+.assistant-bubble[data-mode="full"] .assistant-card {
+  background: rgba(251, 250, 246, 0.98);
+  border-radius: 8px;
+  display: block;
+  height: min(390px, calc(100vh - 76px));
+  padding-bottom: 12px;
+  width: min(390px, calc(100vw - 58px));
+}
+
+.assistant-bubble[data-mode="full"][data-chat="active"] .assistant-card,
+.assistant-bubble[data-mode="full"][data-busy="true"] .assistant-card {
+  height: min(476px, calc(100vh - 76px));
+}
+
+.assistant-bubble[data-mode="full"] .assistant-card:hover {
+  cursor: grab;
+}
+
+.assistant-bubble[data-mode="full"] arcgis-assistant {
+  cursor: default;
+  height: calc(100% - 12px);
+}
+
+.assistant-header {
+  align-items: center;
+  cursor: move;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: minmax(0, 1fr) 14px;
+  min-height: 34px;
+  padding: 4px 22px 4px 8px;
+  user-select: none;
+}
+
+.assistant-header strong {
+  color: #17211f;
+  display: block;
+  font: 800 11px/1.05 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.assistant-header small {
+  color: #56615c;
+  display: block;
+  font: 10px/1.1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.assistant-spinner {
+  animation: assistant-spin 1s linear infinite;
+  border: 2px solid rgba(31, 143, 133, 0.16);
+  border-top-color: #1f8f85;
+  border-radius: 999px;
+  display: none;
+  height: 10px;
+  width: 10px;
+}
+
+.assistant-bubble[data-busy="true"] .assistant-spinner {
+  display: block;
+}
+
+@keyframes assistant-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.assistant-bubble[data-mode="peek"] arcgis-assistant {
+  display: none;
+}
+
+.assistant-bubble[data-mode="full"] .assistant-header {
+  display: none;
+}
+
+arcgis-assistant {
+  display: block;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  --calcite-color-brand: #1f8f85;
+  --calcite-color-brand-hover: #16766e;
+  --calcite-color-brand-press: #105f59;
+  --calcite-color-foreground-1: #fbfaf6;
+  --calcite-color-foreground-2: #f2f8f5;
+  --calcite-color-border-3: rgba(31, 143, 133, 0.18);
+  --calcite-color-text-1: #17211f;
+  --calcite-color-text-2: #56615c;
+  --calcite-font-size--2: 8px;
+  --calcite-font-size--1: 10px;
+  --calcite-font-size-0: 11px;
+  --calcite-font-size-1: 13px;
+}
+
+.assistant-bubble[data-mode="peek"] arcgis-assistant::part(header),
+.assistant-bubble[data-mode="peek"] arcgis-assistant::part(description) {
+  display: none;
+}
+
+.globby-menu {
+  background: rgba(251, 250, 246, 0.98);
+  border: 1px solid rgba(31, 143, 133, 0.24);
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(23, 33, 31, 0.18);
+  list-style: none;
+  margin: 0;
+  min-width: 136px;
+  padding: 4px;
+  position: fixed;
+  z-index: 12;
+}
+
+.globby-menu button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: #17211f;
+  cursor: pointer;
+  display: block;
+  font: 600 11px/1.2 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 7px 8px;
+  text-align: left;
+  width: 100%;
+}
+
+.globby-menu button:hover {
+  background: #eef8f5;
+}
+
+.globby-menu-section {
+  border-top: 1px solid rgba(31, 143, 133, 0.14);
+  color: #56615c;
+  font: 700 9px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 3px 4px 1px;
+  padding: 6px 4px 3px;
+  text-transform: uppercase;
+}
+
+.globby-menu button[aria-checked="true"]::before {
+  content: "✓ ";
+}
+
+.show-globby-button {
+  appearance: none;
+  background: rgba(251, 250, 246, 0.98);
+  border: 1px solid rgba(31, 143, 133, 0.28);
+  border-radius: 999px;
+  bottom: 18px;
+  box-shadow: 0 12px 24px rgba(23, 33, 31, 0.18);
+  color: #17211f;
+  cursor: pointer;
+  font: 700 11px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 30px;
+  padding: 0 12px;
+  position: fixed;
+  right: 18px;
+  z-index: 12;
+}
+
+.show-globby-button:hover {
+  background: #eef8f5;
+}
+
+@media (max-width: 920px) {
+  .demo-intro-panel {
+    inline-size: min(320px, calc(100vw - 76px));
+    right: 12px;
+    top: 12px;
+  }
+
+  .assistant-bubble {
+    max-width: calc(100vw - 72px);
+  }
+
+  .assistant-card {
+    width: min(172px, calc(100vw - 74px));
+  }
+
+  .assistant-header strong {
+    font-size: 11px;
+  }
+
+  .assistant-header small {
+    font-size: 10px;
+  }
+}
