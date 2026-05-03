@@ -5,7 +5,7 @@ export function initializeTinyAssistant(host) {
   const assistantToggle = host.querySelector(".assistant-toggle");
   const assistantCard = host.querySelector(".assistant-card");
   const assistantHeader = host.querySelector(".assistant-header");
-  const assistantElement = host.querySelector("arcgis-assistant");
+  let assistantElement = host.querySelector("arcgis-assistant");
   const demoIntroPanel = document.querySelector("#demo-intro-panel");
   const followCursorToggle = host.querySelector(".follow-cursor-toggle");
   const globbyMenu = host.querySelector(".globby-menu");
@@ -32,7 +32,7 @@ export function initializeTinyAssistant(host) {
   let globbyHelloTimer = null;
   let assistantPatchLoopTimer = null;
   let assistantSignatureBeforeSubmit = "";
-  const watchedAssistantRoots = new WeakSet();
+  let watchedAssistantRoots = new WeakSet();
   const globbyStartupMode = pageParams.get("globby")?.toLowerCase();
   const startWithGlobbyHidden = [
     "0",
@@ -375,6 +375,7 @@ export function initializeTinyAssistant(host) {
       window.setTimeout(showDialogForCurrentAttempt, 250);
       await credential;
       setArcgisSignedIn(true);
+      await refreshArcgisAssistantAfterSignIn();
       window.setTimeout(() => checkArcgisSignInStatus(), 0);
       return true;
     } catch {
@@ -424,6 +425,25 @@ export function initializeTinyAssistant(host) {
     }
 
     setPanelOpen(true);
+  }
+
+  async function refreshArcgisAssistantAfterSignIn() {
+    if (!assistantElement) {
+      return;
+    }
+
+    await customElements.whenDefined("arcgis-assistant");
+    const suggestedPrompts = assistantElement.suggestedPrompts;
+    const replacement = assistantElement.cloneNode(true);
+    if (Array.isArray(suggestedPrompts) && suggestedPrompts.length > 0) {
+      replacement.suggestedPrompts = suggestedPrompts;
+    }
+
+    assistantElement.replaceWith(replacement);
+    assistantElement = replacement;
+    watchedAssistantRoots = new WeakSet();
+    await assistantElement.componentOnReady?.();
+    runAssistantPatchPass();
   }
 
   function setGlobbyVisible(visible) {
