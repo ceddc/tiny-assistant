@@ -66,6 +66,7 @@ export function initializeTinyAssistant(host) {
       width: 77.44,
     },
   };
+  const VIEWPORT_MARGIN = 12;
 
   if (assistantElement && !assistantElement.suggestedPrompts?.length) {
     assistantElement.suggestedPrompts = [
@@ -551,23 +552,36 @@ export function initializeTinyAssistant(host) {
     const activeOffset = modeLayout.offset;
     const desiredX = globbyCenter.x + activeOffset.x;
     const desiredY = globbyCenter.y + activeOffset.y;
-    const minX = isFull
-      ? activeWidth - CHAT_LAYOUT.collapsed.panelWidth + 8
-      : 8;
-    const minY = isFull
-      ? activeHeight - CHAT_LAYOUT.collapsed.panelHeight + 8
-      : 8;
-    let x = Math.min(
-      Math.max(minX, desiredX),
-      window.innerWidth - CHAT_LAYOUT.collapsed.panelWidth - 48,
+    let x = clamp(
+      desiredX,
+      VIEWPORT_MARGIN,
+      window.innerWidth - CHAT_LAYOUT.collapsed.panelWidth - VIEWPORT_MARGIN,
     );
-    const y = Math.min(
-      Math.max(minY, desiredY),
-      window.innerHeight - CHAT_LAYOUT.collapsed.panelHeight - 16,
+    let y = clamp(
+      desiredY,
+      VIEWPORT_MARGIN,
+      window.innerHeight - CHAT_LAYOUT.collapsed.panelHeight - VIEWPORT_MARGIN,
     );
 
     if (isFull) {
-      x = placeExpandedBubbleBesideGlobby(activeWidth, minX);
+      // The expanded card is right/bottom-aligned inside the small bubble anchor.
+      // Clamp the visible card rectangle first, then convert back to anchor
+      // coordinates so the ArcGIS panel cannot be clipped at the viewport edge.
+      const panelOverlapX = activeWidth - CHAT_LAYOUT.collapsed.panelWidth;
+      const panelOverlapY = activeHeight - CHAT_LAYOUT.collapsed.panelHeight;
+      const desiredPanelTop = desiredY - panelOverlapY;
+      const panelLeft = placeExpandedPanelLeft(activeWidth);
+      const panelTop = clamp(
+        desiredPanelTop,
+        VIEWPORT_MARGIN,
+        Math.max(
+          VIEWPORT_MARGIN,
+          window.innerHeight - activeHeight - VIEWPORT_MARGIN,
+        ),
+      );
+
+      x = panelLeft + panelOverlapX;
+      y = panelTop + panelOverlapY;
     }
 
     assistantBubble.style.left = `${x}px`;
@@ -576,26 +590,30 @@ export function initializeTinyAssistant(host) {
     assistantBubble.style.bottom = "auto";
   }
 
-  function placeExpandedBubbleBesideGlobby(panelWidth, minBubbleX) {
-    const margin = 8;
-    const maxBubbleX =
-      window.innerWidth - CHAT_LAYOUT.collapsed.panelWidth - 48;
-    const panelOverlap = panelWidth - CHAT_LAYOUT.collapsed.panelWidth;
+  function placeExpandedPanelLeft(panelWidth) {
+    const maxPanelLeft = Math.max(
+      VIEWPORT_MARGIN,
+      window.innerWidth - panelWidth - VIEWPORT_MARGIN,
+    );
     const globbyLeft = globbyCenter.x - CHAT_LAYOUT.globby.centerOffsetX;
     const globbyRight = globbyLeft + CHAT_LAYOUT.globby.width;
     const panelLeftIfRight = globbyRight + CHAT_LAYOUT.expanded.gapFromGlobby;
     const panelRightIfLeft = globbyLeft - CHAT_LAYOUT.expanded.gapFromGlobby;
     const canPlaceRight =
-      panelLeftIfRight + panelWidth <= window.innerWidth - margin;
-    const canPlaceLeft = panelRightIfLeft - panelWidth >= margin;
+      panelLeftIfRight + panelWidth <= window.innerWidth - VIEWPORT_MARGIN;
+    const canPlaceLeft = panelRightIfLeft - panelWidth >= VIEWPORT_MARGIN;
     const preferRight = globbyCenter.x < window.innerWidth / 2;
     const placeRight = canPlaceRight && (preferRight || !canPlaceLeft);
     const panelLeft = placeRight
       ? panelLeftIfRight
-      : Math.max(margin, panelRightIfLeft - panelWidth);
-    const bubbleX = panelLeft + panelOverlap;
+      : panelRightIfLeft - panelWidth;
 
-    return Math.min(Math.max(minBubbleX, bubbleX), maxBubbleX);
+    return clamp(panelLeft, VIEWPORT_MARGIN, maxPanelLeft);
+  }
+
+  function clamp(value, min, max) {
+    const safeMax = Math.max(min, max);
+    return Math.min(Math.max(value, min), safeMax);
   }
 
   function dockGlobbyForExpandedPanel() {
