@@ -69,7 +69,9 @@ You can use Tiny Assistant directly from the GitHub Pages CDN. The hosted files
 are:
 
 - module: `https://ceddc.github.io/tiny-assistant/tiny-assistant.js`
-- sprite: `https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp`
+- Globby sprite: `https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp`
+- Clippy sprite: `https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp`
+- Boba sprite: `https://ceddc.github.io/tiny-assistant/assets/boba-spritesheet.webp`
 
 The simplest external page loads Esri's ArcGIS CDN plus the hosted Tiny
 Assistant module:
@@ -120,6 +122,50 @@ is `tiny-arcgis-assistant`. It accepts `reference-element`, `sprite-src`,
 `suggested-prompts`, optional `sprite`, and optional `sprites`. When multiple
 sprites are configured, the right-click menu includes a Style section for
 switching between them.
+
+## Sprite Styles
+
+Tiny Assistant can use one sprite or several named sprite styles.
+
+For one character, keep the simple `sprite-src` attribute:
+
+```html
+<tiny-arcgis-assistant
+  reference-element="#map"
+  sprite-src="https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp">
+</tiny-arcgis-assistant>
+```
+
+For multiple characters, pass a `sprites` object and optionally choose the
+initial style with `sprite`:
+
+```html
+<tiny-arcgis-assistant
+  reference-element="#map"
+  sprite="boba"
+  sprite-src="https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp"
+  sprites='{
+    "globby": "https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp",
+    "clippy": "https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp",
+    "boba": "https://ceddc.github.io/tiny-assistant/assets/boba-spritesheet.webp"
+  }'>
+</tiny-arcgis-assistant>
+```
+
+When more than one sprite is configured, right-click the assistant character and
+use the Style section to switch between them at runtime. The menu is clamped to
+the viewport so it stays visible near screen edges.
+
+The current bundled styles are:
+
+- `globby`: the original Tiny Assistant character in this repo;
+- `clippy`: a local experiment sprite;
+- `boba`: a local copy of the [Boba Petdex sprite](https://petdex.crafter.run/pets/boba).
+
+Sprites need to follow the same Codex-style atlas contract used by Globby:
+8 columns, 9 rows, and the same row meanings for idle, movement, wave, waiting,
+review, and related states. A different atlas layout would need extra metadata
+before Tiny Assistant could animate it correctly.
 
 ## ArcGIS Account Requirement
 
