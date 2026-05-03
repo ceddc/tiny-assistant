@@ -20,16 +20,16 @@ that replaces the standard ArcGIS AI Assistant panel?
 - Esri [AI Assistant component sample](https://developers.arcgis.com/javascript/latest/sample-code/ai-assistant/)
 - Esri [`arcgis-assistant` component reference](https://developers.arcgis.com/javascript/latest/references/ai-components/components/arcgis-assistant/)
 - Codex/ChatGPT-style pets via [Codex settings](https://openai.com/academy/codex-settings/), [the Codex app](https://openai.com/index/introducing-the-codex-app/), and [OpenAI Devs on X](https://x.com/OpenAIDevs/status/2050275713824211041)
-- Pet sprites from [Petdex](https://petdex.crafter.run/), including [Boba](https://petdex.crafter.run/pets/boba)
+- Pet sprites from [Petdex](https://petdex.crafter.run/)
 
 Tiny Assistant keeps the map and AI chat as ArcGIS web components, then wraps
 them with a movable assistant character and compact chat panel.
 
 Bundled sprites:
 
-- `globby`: original Tiny Assistant character in this repo.
-- `clippy`: Petdex-compatible sprite sourced from [Petdex](https://petdex.crafter.run/).
-- `boba`: Petdex sprite sourced from [Boba on Petdex](https://petdex.crafter.run/pets/boba).
+- `globby`: my sprite for this prototype.
+- `clippy`: pet sprite from [Petdex](https://petdex.crafter.run/).
+- `boba`: pet sprite from [Boba on Petdex](https://petdex.crafter.run/pets/boba).
 
 ## Try The Demo
 
@@ -157,12 +157,6 @@ initial style with `sprite`:
 When more than one sprite is configured, right-click the assistant character and
 use the Style section to switch between them at runtime. The menu is clamped to
 the viewport so it stays visible near screen edges.
-
-The current bundled styles are:
-
-- `globby`: the original Tiny Assistant character in this repo;
-- `clippy`: Petdex-compatible sprite sourced from [Petdex](https://petdex.crafter.run/);
-- `boba`: Petdex sprite sourced from [Boba on Petdex](https://petdex.crafter.run/pets/boba).
 
 Sprites need to follow the same Codex-style atlas contract used by Globby:
 8 columns, 9 rows, and the same row meanings for idle, movement, wave, waiting,
