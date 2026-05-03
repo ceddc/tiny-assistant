@@ -716,8 +716,25 @@ export function initializeTinyAssistant(host) {
 
     updateGlobbyMenuLabels();
     globbyMenu.hidden = false;
-    globbyMenu.style.left = `${Math.min(x, window.innerWidth - 160)}px`;
-    globbyMenu.style.top = `${Math.min(y, window.innerHeight - 44)}px`;
+    globbyMenu.style.left = "0px";
+    globbyMenu.style.top = "0px";
+
+    const menuRect = globbyMenu.getBoundingClientRect();
+    const menuWidth = Math.max(menuRect.width, 160);
+    const menuHeight = Math.max(menuRect.height, 44);
+    const left = clamp(
+      x,
+      VIEWPORT_MARGIN,
+      window.innerWidth - menuWidth - VIEWPORT_MARGIN,
+    );
+    const top = clamp(
+      y,
+      VIEWPORT_MARGIN,
+      window.innerHeight - menuHeight - VIEWPORT_MARGIN,
+    );
+
+    globbyMenu.style.left = `${left}px`;
+    globbyMenu.style.top = `${top}px`;
   }
 
   function hideGlobbyMenu() {
