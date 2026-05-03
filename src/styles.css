@@ -51,6 +51,7 @@ tiny-arcgis-assistant {
   z-index: 8;
 }
 
+.demo-intro-panel[closed],
 .demo-intro-panel[hidden] {
   display: none;
 }
