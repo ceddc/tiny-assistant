@@ -75,6 +75,53 @@ function parseSuggestedPrompts(value) {
   }
 }
 
+function toSpriteLabel(name) {
+  return name
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function normalizeSpriteEntries(entries, fallbackSrc) {
+  const sprites = Object.entries(entries || {})
+    .map(([name, src]) => [String(name).trim(), String(src).trim()])
+    .filter(([name, src]) => name && src);
+
+  if (!sprites.some(([name]) => name === "globby") && fallbackSrc) {
+    sprites.unshift(["globby", fallbackSrc]);
+  }
+
+  return sprites;
+}
+
+function parseSprites(value, fallbackSrc) {
+  if (!value) {
+    return normalizeSpriteEntries({ globby: fallbackSrc }, fallbackSrc);
+  }
+
+  try {
+    const parsed = JSON.parse(value);
+    return normalizeSpriteEntries(parsed, fallbackSrc);
+  } catch {
+    const entries = {};
+    value
+      .split(/[\n,]/)
+      .map((entry) => entry.trim())
+      .filter(Boolean)
+      .forEach((entry) => {
+        const separatorIndex = entry.indexOf(":");
+        if (separatorIndex <= 0) {
+          return;
+        }
+
+        const name = entry.slice(0, separatorIndex).trim();
+        const src = entry.slice(separatorIndex + 1).trim();
+        entries[name] = src;
+      });
+
+    return normalizeSpriteEntries(entries, fallbackSrc);
+  }
+}
+
 class TinyArcgisAssistant extends HTMLElement {
   #controller = null;
 
@@ -86,6 +133,12 @@ class TinyArcgisAssistant extends HTMLElement {
     const agents = Array.from(this.children);
     const startHidden = booleanAttribute(this, "start-hidden");
     const spriteSrc = this.getAttribute("sprite-src") || "";
+    const spriteEntries = parseSprites(this.getAttribute("sprites"), spriteSrc);
+    const selectedSpriteName =
+      this.getAttribute("sprite") || spriteEntries[0]?.[0] || "globby";
+    const selectedSprite =
+      spriteEntries.find(([name]) => name === selectedSpriteName) ||
+      spriteEntries[0] || ["globby", spriteSrc];
     const referenceElement =
       this.getAttribute("reference-element") || "arcgis-map";
     const heading = this.getAttribute("heading") || "ArcGIS AI Assistant";
@@ -103,8 +156,8 @@ class TinyArcgisAssistant extends HTMLElement {
 
     const globby = createElement("tiny-assistant-character", {
       class: "tiny-assistant-character",
-      title: "Globby",
-      "sprite-src": spriteSrc,
+      title: toSpriteLabel(selectedSprite[0]),
+      "sprite-src": selectedSprite[1],
       hidden: startHidden,
     });
 
@@ -154,7 +207,7 @@ class TinyArcgisAssistant extends HTMLElement {
       [card, toggle],
     );
 
-    const menu = createElement("menu", { class: "globby-menu", hidden: true }, [
+    const menuChildren = [
       createMenuButton(
         {
           class: "follow-cursor-toggle",
@@ -168,7 +221,33 @@ class TinyArcgisAssistant extends HTMLElement {
         { class: "hide-tiny-assistant-button" },
         "Hide Tiny Assistant",
       ),
-    ]);
+    ];
+
+    if (spriteEntries.length > 1) {
+      menuChildren.push(
+        createElement("li", { class: "globby-menu-section" }, [
+          document.createTextNode("Style"),
+        ]),
+        ...spriteEntries.map(([name, src]) =>
+          createMenuButton(
+            {
+              class: "style-toggle",
+              role: "menuitemradio",
+              "aria-checked": String(name === selectedSprite[0]),
+              "data-sprite-name": name,
+              "data-sprite-src": src,
+            },
+            toSpriteLabel(name),
+          ),
+        ),
+      );
+    }
+
+    const menu = createElement(
+      "menu",
+      { class: "globby-menu", hidden: true },
+      menuChildren,
+    );
 
     const showButton = createElement(
       "button",

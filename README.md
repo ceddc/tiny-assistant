@@ -23,6 +23,12 @@ The project starts from:
 
 It keeps the map and AI chat as real ArcGIS web components, then wraps them in Tiny Assistant, with a tiny movable assistant character named Globby.
 
+The character layer is designed around Codex-style pet spritesheets, so it can
+also work with compatible sprites from projects like
+[Petdex](https://petdex.crafter.run/) when they follow the same atlas layout.
+For example, this repo includes a local copy of the
+[Boba sprite](https://petdex.crafter.run/pets/boba).
+
 ## Try The Demo
 
 Open the live demo:
@@ -87,6 +93,11 @@ body { overflow: hidden; }
 <tiny-arcgis-assistant
   reference-element="#map"
   sprite-src="https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp"
+  sprites='{
+    "globby": "https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp",
+    "clippy": "https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp",
+    "boba": "https://ceddc.github.io/tiny-assistant/assets/boba-spritesheet.webp"
+  }'
   heading="My map assistant"
   description="Ask questions about this map"
   suggested-prompts='["Summarize this map.", "Zoom to the most important feature."]'>
@@ -105,8 +116,10 @@ the local built module from `dist`.
 GitHub Pages hosts your built `tiny-assistant.js` and sprite assets;
 `https://js.arcgis.com/5.0/` remains Esri's ArcGIS CDN. The public custom element
 is `tiny-arcgis-assistant`. It accepts `reference-element`, `sprite-src`,
-`heading`, `description`, optional `start-hidden`, and optional
-`suggested-prompts`.
+`heading`, `description`, optional `start-hidden`, optional
+`suggested-prompts`, optional `sprite`, and optional `sprites`. When multiple
+sprites are configured, the right-click menu includes a Style section for
+switching between them.
 
 ## ArcGIS Account Requirement
 
@@ -164,7 +177,7 @@ the built `tiny-assistant.js` file published by GitHub Pages.
 - `src/components/tiny-arcgis-assistant.js` defines the public
   `<tiny-arcgis-assistant>` element.
 - `src/components/tiny-assistant-character.js` renders and animates Globby from
-  the spritesheet.
+  Codex-style spritesheets.
 - `src/lib/tiny-assistant-controller.js` wires sign-in, chat open/close,
   positioning, ArcGIS assistant styling patches, and animation states.
 - `index.html` is the main demo page.

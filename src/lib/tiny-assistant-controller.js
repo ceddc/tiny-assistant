@@ -13,6 +13,7 @@ export function initializeTinyAssistant(host) {
   const hideGlobbyButton = host.querySelector(".hide-tiny-assistant-button");
   const panelMenuToggle = host.querySelector(".panel-menu-toggle");
   const showGlobbyButton = host.querySelector(".show-tiny-assistant-button");
+  const styleToggles = Array.from(host.querySelectorAll(".style-toggle"));
   const globby = host.querySelector("tiny-assistant-character");
   const globbyStatus = host.querySelector(".tiny-assistant-status");
   const mapElement = document.querySelector(
@@ -35,6 +36,11 @@ export function initializeTinyAssistant(host) {
   let assistantSignatureBeforeSubmit = "";
   let watchedAssistantRoots = new WeakSet();
   let expandedPanelSide = "left";
+  let activeSpriteName =
+    styleToggles.find((button) => button.getAttribute("aria-checked") === "true")
+      ?.dataset.spriteName ||
+    host.getAttribute("sprite") ||
+    "globby";
   const globbyStartupMode = pageParams.get("globby")?.toLowerCase();
   const startWithGlobbyHidden = [
     "0",
@@ -555,6 +561,13 @@ export function initializeTinyAssistant(host) {
     await openChatOrSignIn();
   });
 
+  styleToggles.forEach((button) => {
+    button.addEventListener("click", () => {
+      setAssistantStyle(button.dataset.spriteName, button.dataset.spriteSrc);
+      hideGlobbyMenu();
+    });
+  });
+
   hideGlobbyButton?.addEventListener("click", () => {
     hideGlobbyMenu();
     setGlobbyVisible(false);
@@ -718,10 +731,34 @@ export function initializeTinyAssistant(host) {
       "aria-checked",
       String(followCursorEnabled),
     );
+    styleToggles.forEach((button) => {
+      button.setAttribute(
+        "aria-checked",
+        String(button.dataset.spriteName === activeSpriteName),
+      );
+    });
     if (panelMenuToggle) {
       panelMenuToggle.textContent =
         assistantBubble?.dataset.mode === "full" ? "Close chat" : "Open chat";
     }
+  }
+
+  function setAssistantStyle(name, src) {
+    if (!globby || !name || !src) {
+      return;
+    }
+
+    activeSpriteName = name;
+    host.setAttribute("sprite", name);
+    globby.setAttribute("sprite-src", src);
+    globby.setAttribute("title", toSpriteLabel(name));
+    updateGlobbyMenuLabels();
+  }
+
+  function toSpriteLabel(name) {
+    return String(name)
+      .replace(/[-_]+/g, " ")
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 
   async function patchArcgisMapSize() {
