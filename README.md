@@ -13,6 +13,12 @@ It keeps the map and AI chat as real ArcGIS web components, then wraps them in T
 
 ## Try The Demo
 
+Open the live demo:
+
+[https://ceddc.github.io/tiny-assistant/](https://ceddc.github.io/tiny-assistant/)
+
+Or run it locally:
+
 ```bash
 npm install
 npm run dev
