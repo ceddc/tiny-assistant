@@ -359,7 +359,6 @@ export function initializeTinyAssistant(host) {
     }
 
     const signInAttempt = ++arcgisSignInAttempt;
-    let signedIn = false;
     arcgisSignInBusy = true;
     arcgisSignInAllowed = true;
     updateGlobbyStatus();
@@ -375,19 +374,17 @@ export function initializeTinyAssistant(host) {
       window.setTimeout(showDialogForCurrentAttempt, 0);
       window.setTimeout(showDialogForCurrentAttempt, 250);
       await credential;
-      signedIn = await checkArcgisSignInStatus();
-      setArcgisSignedIn(signedIn);
-      return signedIn;
+      setArcgisSignedIn(true);
+      window.setTimeout(() => checkArcgisSignInStatus(), 0);
+      return true;
     } catch {
       setArcgisSignedIn(false);
       return false;
     } finally {
       arcgisSignInAllowed = false;
       arcgisSignInBusy = false;
-      if (signedIn) {
+      if (arcgisSignedIn) {
         hideArcgisDialogAfterSuccess();
-      } else {
-        cancelUnexpectedArcgisDialog();
       }
       updateGlobbyStatus();
       if (!assistantBusy) {
@@ -426,7 +423,6 @@ export function initializeTinyAssistant(host) {
       }
     }
 
-    await checkArcgisSignInStatus();
     setPanelOpen(true);
   }
 
