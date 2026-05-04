@@ -21,10 +21,10 @@ const FOLLOW_CURSOR = {
 };
 
 const ASSISTANT_SIZE = {
-  width: 77.44,
-  height: 83.893,
-  centerOffsetX: 38.72,
-  centerOffsetY: 41.14,
+  width: 97.962,
+  height: 106.124,
+  centerOffsetX: 48.981,
+  centerOffsetY: 52.042,
 };
 
 const IDLE_FRAMES = [

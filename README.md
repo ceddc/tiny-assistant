@@ -33,6 +33,7 @@ them with a movable assistant character and compact chat panel.
 Bundled sprites:
 
 - `globby`: my sprite for this prototype.
+- `globby-may-4th`: an alternate Globby sprite style.
 - `clippy`: pet sprite from [Petdex](https://petdex.crafter.run/).
 - `boba`: pet sprite from [Boba on Petdex](https://petdex.crafter.run/pets/boba).
 
@@ -77,6 +78,7 @@ are:
 
 - module: `https://ceddc.github.io/tiny-assistant/tiny-assistant.js`
 - Globby sprite: `https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp`
+- Globby May 4th sprite: `https://ceddc.github.io/tiny-assistant/assets/globbymay4-spritesheet.webp`
 - Clippy sprite: `https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp`
 - Boba sprite: `https://ceddc.github.io/tiny-assistant/assets/boba-spritesheet.webp`
 
@@ -103,6 +105,7 @@ body { overflow: hidden; }
   reference-element="#map"
   sprites='{
     "globby": "https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp",
+    "globby-may-4th": "https://ceddc.github.io/tiny-assistant/assets/globbymay4-spritesheet.webp",
     "clippy": "https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp",
     "boba": "https://ceddc.github.io/tiny-assistant/assets/boba-spritesheet.webp"
   }'
@@ -153,6 +156,7 @@ initial style with `sprite`:
   sprite="boba"
   sprites='{
     "globby": "https://ceddc.github.io/tiny-assistant/assets/globby-spritesheet.webp",
+    "globby-may-4th": "https://ceddc.github.io/tiny-assistant/assets/globbymay4-spritesheet.webp",
     "clippy": "https://ceddc.github.io/tiny-assistant/assets/clippy-spritesheet.webp",
     "boba": "https://ceddc.github.io/tiny-assistant/assets/boba-spritesheet.webp"
   }'>

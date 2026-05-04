@@ -76,9 +76,9 @@ export function initializeTinyAssistant(host) {
       panelWidth: 330,
     },
     globby: {
-      centerOffsetX: 38.72,
-      centerOffsetY: 41.14,
-      width: 77.44,
+      centerOffsetX: 48.981,
+      centerOffsetY: 52.042,
+      width: 97.962,
     },
   };
   const MOBILE_PANEL_BREAKPOINT = 640;
