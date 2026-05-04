@@ -132,7 +132,7 @@ template.innerHTML = `
       inset: 0;
       pointer-events: none;
       position: fixed;
-      z-index: 7;
+      z-index: 10;
     }
 
     .sprite {
