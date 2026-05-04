@@ -106,6 +106,19 @@ tiny-arcgis-assistant {
   text-underline-offset: 3px;
 }
 
+.demo-intro-repo-link {
+  align-items: center;
+  display: inline-flex;
+  gap: 5px;
+}
+
+.demo-intro-repo-link svg {
+  block-size: 13px;
+  fill: currentColor;
+  flex: 0 0 13px;
+  inline-size: 13px;
+}
+
 .assistant-bubble {
   display: block;
   height: 42px;
