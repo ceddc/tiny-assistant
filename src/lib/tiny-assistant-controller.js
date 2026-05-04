@@ -59,18 +59,19 @@ export function initializeTinyAssistant(host) {
   // is easy to tune without spelunking through the interaction handlers.
   const CHAT_LAYOUT = {
     collapsed: {
-      offset: { x: -176, y: -64 },
+      gapFromGlobby: 8,
+      offset: { x: -202, y: -72 },
       panelHeight: 42,
       panelWidth: 172,
     },
     expanded: {
-      gapFromGlobby: 4,
+      gapFromGlobby: 8,
       offset: { x: -204, y: -82 },
       panelHeight: 476,
       panelWidth: 390,
     },
     mobileExpanded: {
-      gapFromGlobby: 4,
+      gapFromGlobby: 8,
       offset: { x: -178, y: -74 },
       panelHeight: 390,
       panelWidth: 330,
@@ -669,6 +670,8 @@ export function initializeTinyAssistant(host) {
 
       x = panelLeft + panelOverlapX;
       y = panelTop + panelOverlapY;
+    } else {
+      x = placeCollapsedPanelLeft(modeLayout.panelWidth, modeLayout);
     }
 
     assistantBubble.style.left = `${x}px`;
@@ -711,6 +714,35 @@ export function initializeTinyAssistant(host) {
       expandedPanelSide === "right" ? panelLeftIfRight : panelLeftIfLeft;
 
     return clamp(panelLeft, VIEWPORT_MARGIN, maxPanelLeft);
+  }
+
+  function placeCollapsedPanelLeft(panelWidth, collapsedLayout) {
+    const maxPanelLeft = Math.max(
+      VIEWPORT_MARGIN,
+      window.innerWidth - panelWidth - VIEWPORT_MARGIN,
+    );
+    const globbyLeft = globbyCenter.x - CHAT_LAYOUT.globby.centerOffsetX;
+    const globbyRight = globbyLeft + CHAT_LAYOUT.globby.width;
+    const panelLeftIfRight = globbyRight + collapsedLayout.gapFromGlobby;
+    const panelRightIfLeft = globbyLeft - collapsedLayout.gapFromGlobby;
+    const panelLeftIfLeft = panelRightIfLeft - panelWidth;
+    const leftSideFits = panelLeftIfLeft >= VIEWPORT_MARGIN;
+    const rightSideFits =
+      panelLeftIfRight + panelWidth <= window.innerWidth - VIEWPORT_MARGIN;
+
+    if (expandedPanelSide === "left" && leftSideFits) {
+      return clamp(panelLeftIfLeft, VIEWPORT_MARGIN, maxPanelLeft);
+    }
+
+    if (expandedPanelSide === "right" && rightSideFits) {
+      return clamp(panelLeftIfRight, VIEWPORT_MARGIN, maxPanelLeft);
+    }
+
+    return clamp(
+      leftSideFits ? panelLeftIfLeft : panelLeftIfRight,
+      VIEWPORT_MARGIN,
+      maxPanelLeft,
+    );
   }
 
   function clamp(value, min, max) {
