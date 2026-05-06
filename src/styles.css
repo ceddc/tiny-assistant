@@ -140,6 +140,7 @@ tiny-assistant-character[hidden] {
   background: rgba(251, 250, 246, 0.96);
   border: 1px solid rgba(31, 143, 133, 0.26);
   border-radius: 999px;
+  caret-color: transparent;
   box-shadow: 0 8px 18px rgba(23, 33, 31, 0.16);
   cursor: pointer;
   display: flex;
@@ -148,6 +149,7 @@ tiny-assistant-character[hidden] {
   position: absolute;
   right: -12px;
   top: 7px;
+  user-select: none;
   width: 28px;
   z-index: 2;
 }
@@ -156,12 +158,24 @@ tiny-assistant-character[hidden] {
   background: #eef8f5;
 }
 
+.assistant-toggle:focus {
+  outline: none;
+}
+
+.assistant-toggle:focus-visible {
+  box-shadow:
+    0 0 0 2px rgba(251, 250, 246, 0.98),
+    0 0 0 4px rgba(31, 143, 133, 0.42),
+    0 8px 18px rgba(23, 33, 31, 0.16);
+}
+
 .assistant-toggle span {
   border-bottom: 2px solid #1f8f85;
   border-right: 2px solid #1f8f85;
   display: block;
   flex: 0 0 auto;
   height: 7px;
+  pointer-events: none;
   transform: translateY(2px) rotate(225deg);
   width: 7px;
 }
